@@ -1,0 +1,2 @@
+# POC
+Przetwarzanie Obrazów Cyfrowych
