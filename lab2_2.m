@@ -65,5 +65,6 @@ for ii=1:(newXX-2)
 end
 
 figure(2);
-imshow(uint8(newImage));
+imshow(bilinearInterpolation(Image, [270 396]));
+
 %imshow(newImage);
