@@ -24,11 +24,16 @@ yStep = round(YY/newYY);
 
 pomImage = im2double(Image);
 
-for ii=1:(newXX-2)
-    for jj=1:(newYY-2)
+for ii=1:(newXX)
+    for jj=1:(newYY)
         i1 = floor(ii*xStep);
         j1 = floor(jj*yStep);
         
+        i1 = max(i1, 0);
+        j1 = max(j1, 0);
+        i1 = min(i1, XX-1);
+        j1 = min(j1, YY-1);
+        %{
         if (i1 > XX - 1)
             i1 = XX-1;
         end
@@ -36,19 +41,20 @@ for ii=1:(newXX-2)
          if (j1 > YY - 1)
             j1 = YY-1;
          end
+        %}
         
         A = [j1,i1];
-        B = A + [0, 1];
-        C = A + [1, 1];
-        D = A + [1, 0];
+        B = A + [1, 0];
+        C = A + [0, 1];
+        D = A + [1, 1];
              
-        i = ii/i1;
+        i = ii - i1;
       %{ 
         if (i > XX-1)
            i = XX-1;
         end
        %} 
-        j = jj/j1;    
+        j = jj - j1;    
         %{
         if ( j > YY-1)
            j = YY -1;
@@ -59,12 +65,11 @@ for ii=1:(newXX-2)
         vC = pomImage(C(1), C(2));
         vD = pomImage(D(1), D(2));
   
-        newImage(ii+1,jj+1) = [1 - i, i] * [vA, vD; vB, vC]*[1-j;j]; 
-
+       % newImage(ii, jj) = [1 - i, i] * [vA, vD; vB, vC]*[1-j;j]; 
+        newImage(ii, jj) = ((1.0-i)*(1.0-j)*vA + i*(1.0-j)*vB + (1.0-i)*j*vC + i*j*vD);
     end
 end
 
 figure(2);
-imshow(bilinearInterpolation(Image, [270 396]));
-
-%imshow(newImage);
+%imshow(bilinearInterpolation(Image, [270 396]));
+imshow(newImage);
