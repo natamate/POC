@@ -13,65 +13,68 @@ imshow(Jet);
 %}
 
 %% Dodawanie
-%{
+
 Add = imadd(Lena, Jet);
 
-figure(3);
+figure(1);
+subplot(1,2,1);
 imshow(Add);
 
 Add2 = imadd(uint16(Lena), uint16(Jet));
-figure(4);
+subplot(1,2,2);
 imshow(Add2, []);
-%}
+
 
 %% Kombinacja liniowa
-%{
-figure(5);
+
+figure(2);
+subplot(1,3,1);
 Comb = imlincomb(2,Lena);
 imshow(Comb);
-figure(6);
+subplot(1,3,2);
 Comb = imlincomb(12,Lena);
 imshow(Comb);
 
-figure(7);
+subplot(1,3,3);
 Comb = imlincomb(2,Lena,1,Jet);
 imshow(Comb);
-%}
+
 
 %% Odejmowanie
-%{
-figure(8);
+
+figure(3);
+subplot(1,3,1);
 Sub = imsubtract(Lena,Jet);
 imshow(Sub, []);
 
-figure(9);
+subplot(1,3,2);
 Sub2 = imsubtract(int16(Lena), int16(Jet));
 imshow(Sub2, []);
 
-figure(10);
+subplot(1,3,3);
 Abs = imabsdiff(Lena, Jet);
 imshow(Abs,[]);
-%}
 
 %% Mnożenie
-%{
-figure(11);
+
+figure(4);
+subplot(1,3,1);
 Multi = immultiply(Lena, Jet);
 imshow(Multi, []);
 
-figure(12);
+subplot(1,3,2);
 Multi2 = immultiply(Lena, 2);
 imshow(Multi2);
 
 MaskaPrev = imread('kolo.bmp');
 Maska = boolean(MaskaPrev);
 
-figure(13);
+subplot(1,3,3);
 Multi3 = immultiply(Lena, Maska);
 imshow(Multi3);
-%}
+
 
 %% Negatyw
 Incomp = imcomplement(Lena);
-figure(14);
+figure(5);
 imshow(Incomp);
