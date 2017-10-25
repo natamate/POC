@@ -28,16 +28,13 @@ imshow(Add2, []);
 %% Kombinacja liniowa
 
 figure(2);
-subplot(1,3,1);
-Comb = imlincomb(2,Lena);
-imshow(Comb);
-subplot(1,3,2);
-Comb = imlincomb(12,Lena);
-imshow(Comb);
+subplot(1,2,1);
+Comb = imlincomb(2,uint16(Lena), 3, uint16(Jet));
+imshow(Comb,[]);
 
-subplot(1,3,3);
-Comb = imlincomb(2,Lena,1,Jet);
-imshow(Comb);
+subplot(1,2,2);
+Comb = imlincomb(2,uint16(Lena),1,uint16(Jet));
+imshow(Comb,[]);
 
 
 %% Odejmowanie
@@ -59,7 +56,7 @@ imshow(Abs,[]);
 
 figure(4);
 subplot(1,3,1);
-Multi = immultiply(Lena, Jet);
+Multi = immultiply(uint16(Lena), uint16(Jet));
 imshow(Multi, []);
 
 subplot(1,3,2);
@@ -70,11 +67,11 @@ MaskaPrev = imread('kolo.bmp');
 Maska = boolean(MaskaPrev);
 
 subplot(1,3,3);
-Multi3 = immultiply(Lena, Maska);
-imshow(Multi3);
+Multi3 = immultiply(uint16(Lena), uint16(Maska));
+imshow(Multi3, []);
 
 
 %% Negatyw
-Incomp = imcomplement(Lena);
+Incomp = imcomplement(uint16(Lena));
 figure(5);
-imshow(Incomp);
+imshow(Incomp,[]);
