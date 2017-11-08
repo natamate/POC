@@ -1,0 +1,14 @@
+clearvars; close all; clc;
+load histogramZadany;
+figure;
+IMG=imread('phobos.bmp');
+subplot(1,5,1); 
+imshow(IMG);
+subplot(1,5,2);
+imshow(histeq(IMG));
+subplot(1,5,3); 
+imshow(histeq(IMG,histogramZadany));
+subplot(1,5,4); 
+imshow(imadjust(IMG));
+subplot(1,5,5);
+imshow(adapthisteq(IMG));
