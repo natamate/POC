@@ -19,6 +19,7 @@ lenaG = lenargb(:, :, 2);
 subplot(2,4,5);
 imshow(lenaG);
 
+%% wyswietl histogram dla poszczegolnych skladowych
 subplot(2,4,6);
 imhist(lenaG);
 
@@ -38,9 +39,10 @@ imgUpdate(:,:,3) = histeq(lenaB);
 figure(2);
 imshow(imgUpdate);
 
+%% przekstalcenie do przestrzeni hsv
 lenahsv = rgb2hsv(lenargb);
 
-figure(2);
+figure(3);
 subplot(1,3,1);
 imhist(lenahsv(:,:,1));
 subplot(1,3,2);
@@ -52,48 +54,60 @@ lenahsvUpdate = lenahsv;
 lenahsvUpdate (:,:,2) = histeq(lenahsv(:,:,2),256);
 lenahsv2 = hsv2rgb(lenahsvUpdate);
 
-figure(3);
+figure(4);
 imshow(lenahsv2);
 
-%{
+%% dla jeziora
+jezioro = imread('jezioro.jpg');
 
-
-IMG3 = imread('jezioro.jpg');
-
+figure(5);
 subplot(2,3,1);
-imshow(IMG3(:,:,1));
+imshow(jezioro(:,:,1));
+
 subplot(2,3,2);
-imshow(IMG3(:,:,2));
+imshow(jezioro(:,:,2));
+
 subplot(2,3,3);
-imshow(IMG3(:,:,3));
+imshow(jezioro(:,:,3));
+
+%% wyswietl histogram dla poszczegolnych skladowych
 subplot(2,3,4);
-imhist(IMG3(:,:,1));
+imhist(jezioro(:,:,1));
+
 subplot(2,3,5);
-imhist(IMG3(:,:,2));
+imhist(jezioro(:,:,2));
+
 subplot(2,3,6);
-imhist(IMG3(:,:,3));
+imhist(jezioro(:,:,3));
 
-IMG3EQ = IMG3;
-IMG3EQ (:,:,1) = histeq(IMG3(:,:,1),256);
-IMG3EQ (:,:,2) = histeq(IMG3(:,:,2),256);
-IMG3EQ (:,:,3) = histeq(IMG3(:,:,3),256);
-figure;
-imshow(IMG3EQ);
+%% Wyrownanie histogramu dla obrazu kolorowego
+jezioroUpdate = jezioro;
+jezioroUpdate (:,:,1) = histeq(jezioro(:,:,1),256);
+jezioroUpdate (:,:,2) = histeq(jezioro(:,:,2),256);
+jezioroUpdate (:,:,3) = histeq(jezioro(:,:,3),256);
 
+figure(6);
+imshow(jezioroUpdate);
 
+%% przekstalcenie do przestrzeni hsv
 
-IMG4 = rgb2hsv(IMG3);
-figure;
+jezioroHSV = rgb2hsv(jezioro);
+
+figure(7);
 subplot(1,3,1);
-imhist(IMG4(:,:,1));
-subplot(1,3,2);
-imhist(IMG4(:,:,2));
-subplot(1,3,3); 
-imhist(IMG4(:,:,3));
+imhist(jezioroHSV(:,:,1));
 
-IMG4EQ = IMG4;
-IMG4EQ (:,:,3) = histeq(IMG4(:,:,3),256);
-IMG41 = hsv2rgb(IMG4EQ);
-figure;
-imshow(IMG41);
-%}
+subplot(1,3,2);
+imhist(jezioroHSV(:,:,2));
+
+subplot(1,3,3); 
+imhist(jezioroHSV(:,:,3));
+
+jezioroHSVUpdate = jezioroHSV;
+
+jezioroHSVUpdate (:,:,3) = histeq(jezioroHSV(:,:,3),256);
+
+jezioroHSV2 = hsv2rgb(jezioroHSVUpdate);
+
+figure(8);
+imshow(jezioroHSV2);
