@@ -45,10 +45,8 @@ imhist(hist1Update);
 
 %{
 hist1Update2 = imadjust(hist1, [0.3 0.7], [0.3 0.6], 256);
-
 subplot(2,3,5);
 imshow(hist1Update2);
-
 subplot(2,3,6);
 imhist(hist1Update2);
 %}
@@ -99,16 +97,16 @@ plot(x2,C3);
 hist1 = imread('hist1.bmp');
 
 figure(5);
-subplot(1,4,1); 
+subplot(2,2,1); 
 imshow(hist1);
 
-subplot(1,4,2);
+subplot(2,2,2);
 imshow(imadjust(hist1));
 
-subplot(1,4,3); 
+subplot(2,2,3); 
 imshow(histeq(hist1, 256));
 
-subplot(1,4,4); 
+subplot(2,2,4); 
 imshow(adapthisteq(hist1));
 
 %% obrazy rzeczywiste
@@ -116,44 +114,44 @@ imshow(adapthisteq(hist1));
 hist2 = imread('hist2.bmp');
 
 figure(6);
-subplot(1,4,1); 
+subplot(2,2,1); 
 imshow(hist2);
 
-subplot(1,4,2);
+subplot(2,2,2);
 imshow(imadjust(hist2));
 
-subplot(1,4,3); 
+subplot(2,2,3); 
 imshow(histeq(hist2));
 
-subplot(1,4,4); 
+subplot(2,2,4); 
 imshow(adapthisteq(hist2));
 
 hist3 = imread('hist3.bmp');
 
 figure(7);
-subplot(1,4,1); 
+subplot(2,2,1); 
 imshow(hist3);
 
-subplot(1,4,2); 
+subplot(2,2,2); 
 imshow(imadjust(hist3));
 
-subplot(1,4,3);
+subplot(2,2,3);
 imshow(histeq(hist3));
 
-subplot(1,4,4);
+subplot(2,2,4);
 imshow(adapthisteq(hist3));
 
 hist4 = imread('hist4.bmp');
 
 figure(8);
-subplot(1,4,1); 
+subplot(2,2,1); 
 imshow(hist4);
 
-subplot(1,4,2); 
+subplot(2,2,2); 
 imshow(imadjust(hist4));
 
-subplot(1,4,3);
+subplot(2,2,3);
 imshow(histeq(hist4));
 
-subplot(1,4,4); 
+subplot(2,2,4); 
 imshow(adapthisteq(hist4));
