@@ -51,7 +51,7 @@ subplot(1,3,3);
 imhist(lenahsv(:,:,3));
 
 lenahsvUpdate = lenahsv;
-lenahsvUpdate (:,:,2) = histeq(lenahsv(:,:,2),256);
+lenahsvUpdate (:,:,3) = histeq(lenahsv(:,:,3),256);
 lenahsv2 = hsv2rgb(lenahsvUpdate);
 
 figure(4);

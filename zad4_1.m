@@ -53,15 +53,15 @@ imhist(hist1Update2);
 
 %% histogram skumulowany
 hist1 = imread('hist1.bmp');
-hist1Update = imadjust(hist1);
-[H,x] = imhist(hist1Update, 256);
+%hist1Update = imadjust(hist1);
+[H,x] = imhist(hist1, 256);
 C = cumsum(H);
 k = max(C)/max(H);
 C2 = C/k;
 
 figure(3);
 subplot(1,2,1);
-imshow(hist1Update);
+imshow(hist1);
 
 subplot(1,2,2);
 hold on;
@@ -88,7 +88,7 @@ subplot(1,5,2);
 imhist(intlut(hist1,LUT),256);
 
 subplot(1,5,3);
-plot(x2,H2);
+bar(x2,H2);
 
 subplot(1,5,4); 
 plot(x2,C3);
