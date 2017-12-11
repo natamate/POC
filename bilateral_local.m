@@ -13,12 +13,16 @@ for i=1:Nx
     cols = reshape(cols, local_window);
     Ncy = ceil(local_window(1)/2);
     Ncx = ceil(local_window(2)/2);
-    dist = sqrt((Ncy - rows).^2 + (Ncx - cols).^2);
-  %  diff = reshape(abs(data(:,i) - data(((Ncy-1)*local_window(1))+Ncx, i)), local_window);    
-    diff = reshape(abs(data(:,i) - patch(Ncy, Ncx), local_window);    
-    gamma = exp(-((diff.^2)./(2*(sigmaR^2)))) .* dist; 
     
-    data_filtered(i) = sum(sum(patch .* gamma))/sum(sum(gamma));
+    dist = sqrt((Ncy - rows).^2 + (Ncx - cols).^2);
+   % diff = reshape(abs(data(:,i) - patch(Ncy, Ncx), local_window);    
+    y = abs(patch - patch(Ncy,Ncx));
+    h = exp(((-1)*(y .* y))/(2*sigma^2));
+    data_filtered(i) = sum(sum(dist .* patch .* h)) / sum(sum(dist .* h));     
+   
+   % gamma = exp(-((diff.^2)./(2*(sigmaR^2)))) .* dist; 
+    
+  %  data_filtered(i) = sum(sum(patch .* gamma))/sum(sum(gamma));
 end
 
 end
