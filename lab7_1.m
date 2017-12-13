@@ -4,10 +4,11 @@ clc;
 
 load('MR_data');
 
-size = 20;
+size = 7;
 
 figure(1);
 
+%% Oryginalne obrazki
 subplot(3,5,1);
 imshow(I_noisefree, []);
 title('noisefree');
@@ -31,6 +32,8 @@ title('noisy3');
 subplot(3,5,5);
 imshow(I_noisy4, []);
 title('noisy4');
+
+%% Splot obrazu
 
 ConFree  = convolution(I_noisefree, [size size]);
 
@@ -57,6 +60,8 @@ ConNoisy4 = convolution(I_noisy4, [size size]);
 
 subplot(3,5,10);
 imshow(ConNoisy4, []);
+
+%% Filtracja bilateralna 
 
 sigmaR = 15;
 
@@ -85,6 +90,8 @@ BilNoisy4  = bilateral(I_noisy4, [size size], sigmaR);
 
 subplot(3,5,15);
 imshow(BilNoisy4, []);
+
+%% Zmien sigme
 
 sigmaR = 115;
 
