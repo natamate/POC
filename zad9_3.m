@@ -5,29 +5,39 @@ clc;
 Image = imread('lab112.png');
 
 %% Wyodrebnij krawedzie kwadratow
-imshow(I);
+figure(1);
+
+subplot(2,2,1);
+imshow(Image);
+title('Oryginalny');
 
 %% binaryzacja
 
 ImageBin = im2bw(Image, 0.4);
 
-figure(1);
+subplot(2,2,2);
 imshow(ImageBin);
+title('Binaryzacja');
 
 %% rekonstrukcja
 
-ImageRek = imcomplement(ImageBin);
+ImageCompl = imcomplement(ImageBin);
 el_strukt = ones(1,100);
-marker = imerode(BWneg,el_strukt);
-Irecon = imreconstruct(marker,BWneg);
-BW2 = imcomplement(Irecon);
-imshow(BW2);
+marker = imerode(ImageCompl,el_strukt);
+
+ImageRekon = imreconstruct(marker,ImageCompl);
+Image2 = imcomplement(ImageRekon);
+
+subplot(2,2,3);
+imshow(Image2);
+title('Rekonstrukcja');
 
 %% wykrywanie krawedzi
-Idet = edge(Irecon,'canny');
-subplot(1,2,1);
-imshow(Idet);
+Imagedet = edge(ImageRekon,'canny');
 
+subplot(2,2,4);
+imshow(Imagedet);
+title('Wykrywanie krawedzi');
 
 
 
