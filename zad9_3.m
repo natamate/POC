@@ -39,66 +39,8 @@ subplot(2,2,4);
 imshow(Imagedet);
 title('Wykrywanie krawedzi');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%{
-clearvars;
-close all;
-clc;
-
-%% wczytanie i wyswietlenie obrazka
-I = imread('lab112.png');
-imshow(I);
-%% binaryzacja
-
-BW = im2bw(I,0.4);
-figure(1);
-imshow(BW);
-%% rekonstrukcja
-BWneg = imcomplement(BW);
-el_strukt = ones(1,100);
-marker = imerode(BWneg,el_strukt);
-Irecon = imreconstruct(marker,BWneg);
-BW2 = imcomplement(Irecon);
-imshow(BW2);
-
-%% wykrywanie krawedzi
-Idet = edge(Irecon,'canny');
-subplot(1,2,1);
-imshow(Idet);
-
-%%
-[H theta rho] = hough(Idet);
+%% Hough
+[H theta rho] = hough(Imagedet);
 
 figure(2);
 imshow(H,[]);
@@ -110,12 +52,17 @@ hold off;
 
 %% houghlines
 
-lines = houghlines(Idet,theta,rho,peaks);
+lines = houghlines(Imagedet,theta,rho,peaks);
 
-figure, imshow(Idet), hold on
+figure(3);
+
+imshow(Imagedet);
+hold on;
+
 max_len = 0;
 for k = 1:length(lines)
-   xy = [lines(k).point1; lines(k).point2];
+   xy = [lines(k).point1;
+   lines(k).point2];
    plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
 
    % Plot beginnings and ends of lines
@@ -132,11 +79,11 @@ end
 
 %% domek
 
-I = imread('dom.png');
-Idet = edge(I,'log');
-imshow(Idet);
+Image = imread('dom.png');
+ImageDet = edge(I,'log');
+imshow(ImageDet);
 
-[H theta rho] = hough(Idet);
+[H theta rho] = hough(ImageDet);
 
 %% poszukiwanie maksimow houghpeaks
 
@@ -145,9 +92,12 @@ plot(peaks,'o');
 
 %% houghlines
 
-lines = houghlines(Idet,theta,rho,peaks);
+lines = houghlines(ImageDet,theta,rho,peaks);
 
-figure, imshow(Idet), hold on
+figure(4);
+imshow(ImageDet);
+hold on;
+
 max_len = 0;
 for k = 1:length(lines)
    xy = [lines(k).point1; lines(k).point2];
@@ -164,4 +114,3 @@ for k = 1:length(lines)
       xy_long = xy;
    end
 end
-%}
