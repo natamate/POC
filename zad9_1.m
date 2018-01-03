@@ -51,65 +51,7 @@ hold on;
 plot(x+1,y+1);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%{
-clearvars;
-close all;
-clc;
-
-%% transformacja Hougha
-
-I = zeros(11,11);
-
-I(5,9) = 1;
-I(2,3) = 1;
-I(1,6) = 1;
-I(7,4) = 1;
-[H theta rho] = hough(I,'RhoResolution',0.1,'ThetaResolution',0.5);
-
-imshow(H);
-
-X = 157;
-Y = 160;
-
-o = theta(X);
-p = rho(Y);
-
-x=[0:0.1:10];
-
-y = ((p - x*cosd(o))/sind(o));
-
-figure(2);
-subplot(1,2,1);
-imshow(I,[]);
-hold on;
-plot(x+1,y+1);
-
-%% test ab
+{%% test ab
 
 I = zeros(5,5);
 I(3,1) = 1;
