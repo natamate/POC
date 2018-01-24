@@ -2,6 +2,7 @@ clearvars;
 close all;
 clc;
 
+%% stworz obraz samych zer
 ImageZeros = zeros(11,11);
 
 ImageZeros(1,10) = 1;
@@ -33,13 +34,19 @@ ImageZeros(3,11) = 1;
 subplot(1,3,3);
 imshow(H,[]);
 
-X = 180;
-Y = 232;
+X = 255;
+Y = 214;
+%X = 353;
+%Y = 146;
+%X = 8;
+%Y = 102;
 
 o = theta(X);
 p = rho(Y);
 
 x = [0:0.1:10];
+
+% cosd i sind akceptuja arg w stopniach
 
 y = ((p - x*cosd(o))/sind(o));
 
@@ -49,20 +56,3 @@ imshow(ImageZeros,[]);
 
 hold on;
 plot(x+1,y+1);
-
-
-{%% test ab
-
-I = zeros(5,5);
-I(3,1) = 1;
-I(3,2) = 1;
-I(3,3) = 1;
-I(3,4) = 1;
-I(3,5) = 1;
-subplot(1,2,1);
-imshow(I);
-H = myHough(I,-100,100,1,-100,100,1);
-subplot(1,2,2);
-imshow(H,[]);
-
-%}

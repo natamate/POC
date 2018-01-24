@@ -22,85 +22,49 @@ title('Binaryzacja');
 %% rekonstrukcja
 
 ImageCompl = imcomplement(ImageBin);
-el_strukt = ones(1,100);
-marker = imerode(ImageCompl,el_strukt);
+%ImageCompl = ImageBin;
+ElStruct = ones(1,100);
+Marker = imerode(ImageCompl,ElStruct);
 
-ImageRekon = imreconstruct(marker,ImageCompl);
-Image2 = imcomplement(ImageRekon);
+ImageRekon = imreconstruct(Marker,ImageCompl);
+%Image2 = imcomplement(ImageRekon);
 
 subplot(2,2,3);
-imshow(Image2);
+imshow(ImageRekon);
 title('Rekonstrukcja');
 
 %% wykrywanie krawedzi
-Imagedet = edge(ImageRekon,'canny');
+Imagedetekcja = edge(ImageRekon,'canny');
 
 subplot(2,2,4);
-imshow(Imagedet);
+imshow(Imagedetekcja);
 title('Wykrywanie krawedzi');
 
 %% Hough
-[H theta rho] = hough(Imagedet);
+[H theta rho] = hough(Imagedetekcja);
 
 figure(2);
 imshow(H,[]);
 
-hold on;
+%% dorysuj maksima
 peaks = houghpeaks(H,8);
-plot(peaks,'o');
+hold on;
+plot(peaks(:,2),peaks(:,1),'o');
 hold off;
 
 %% houghlines
 
-lines = houghlines(Imagedet,theta,rho,peaks);
+lines = houghlines(Imagedetekcja,theta,rho,peaks);
 
 figure(3);
 
-imshow(Imagedet);
+imshow(Imagedetekcja);
 hold on;
 
 max_len = 0;
 for k = 1:length(lines)
    xy = [lines(k).point1;
    lines(k).point2];
-   plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
-
-   % Plot beginnings and ends of lines
-   plot(xy(1,1),xy(1,2),'x','LineWidth',2,'Color','yellow');
-   plot(xy(2,1),xy(2,2),'x','LineWidth',2,'Color','red');
-
-   % Determine the endpoints of the longest line segment
-   len = norm(lines(k).point1 - lines(k).point2);
-   if ( len > max_len)
-      max_len = len;
-      xy_long = xy;
-   end
-end
-
-%% domek
-
-Image = imread('dom.png');
-ImageDet = edge(I,'log');
-imshow(ImageDet);
-
-[H theta rho] = hough(ImageDet);
-
-%% poszukiwanie maksimow houghpeaks
-
-peaks = houghpeaks(H,20);
-plot(peaks,'o');
-
-%% houghlines
-
-lines = houghlines(ImageDet,theta,rho,peaks);
-
-figure(4);
-imshow(ImageDet);
-hold on;
-
-max_len = 0;
-for k = 1:length(lines)
-   xy = [lines(k).point1; lines(k).point2];
    plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
 
    % Plot beginnings and ends of lines
