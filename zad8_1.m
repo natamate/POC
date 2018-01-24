@@ -14,8 +14,9 @@ ImageErode = imerode(Image, SE);
 
 subplot(1,2,2);
 imshow(ImageErode);
+title('Erozja');
 
-%% zimana elementow strukturalnych 
+%% zmiana elementow strukturalnych 
 
 figure(2);
 subplot(1,3,1);
@@ -26,12 +27,14 @@ ImageErode = imerode(Image, SE);
 
 subplot(1,3,2);
 imshow(ImageErode);
+title('Erozja sphere');
 
 SE = strel('diamond', 3);
 ImageErode = imerode(Image, SE);
 
 subplot(1,3,3);
 imshow(ImageErode);
+title('Erozja diamond');
 
 %% zwiekszanie liczby iteracji dla erozji
 
@@ -48,15 +51,24 @@ ImageErode4 = imerode(ImageErode3, SE);
 
 subplot(1,2,2);
 imshow(ImageErode4);
+title('Kilkukrotna Erozja');
 
 %% usun wlosy
 
 Image = imread('buzka.bmp');
 
-M = [0 0 0;
-    1 1 1;
-    0 0 0];
+M = [1 0 0;
+    0 1 0;
+    0 0 1];
 
+%{
+ lub ta druga  str
+
+M = [0 0 1;
+    0 1 0;
+    1 0 0];
+%}
+    
 ImageErode = imerode(Image, M);
 
 figure(4);
@@ -66,15 +78,21 @@ imshow(Image);
 subplot(1,2,2);
 imshow(ImageErode);
 
-
 %% dylatacja
 
 Image = imread('ertka.bmp');
 
 ImageImdilate = imdilate(Image, SE);
 
+
 figure(5); 
+
+subplot(1,2,1);
+imshow(Image);
+
+subplot(1,2,2);
 imshow(ImageImdilate);
+title('Dylatacja');
 
 %% operacje morfologiczne
 

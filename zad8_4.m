@@ -4,69 +4,61 @@ clc;
 
 Image = imread('calculator.bmp');
 
+Image1_erozjaPionowa = imerode(Image,ones(1,71));
+Image1_otwarciePrzezRekonstrukcje = imreconstruct(Image1_erozjaPionowa, Image);
+Image1_otwarcie = imopen(Image,ones(1,71));
+
+Image2_topHatPrzezRekonstrukcje = imabsdiff(Image, Image1_otwarciePrzezRekonstrukcje);
+Image2_topHat = imtophat(Image, ones(1,71));
+
+Image3_erozjaPozioma = imerode(Image2_topHatPrzezRekonstrukcje, ones(1,11));
+Image3_rekonstrukcja = imreconstruct(imerode(Image2_topHatPrzezRekonstrukcje, ones(1,11)), Image2_topHatPrzezRekonstrukcje);
+
+Image4_dylatacjaPozioma = imdilate(Image3_rekonstrukcja, ones(1,21));
+Image4_rekonstrukcja = imreconstruct(min(Image4_dylatacjaPozioma,Image2_topHatPrzezRekonstrukcje),Image2_topHatPrzezRekonstrukcje);
+
+%% Poszczegolne etapy izolowanie tekstu kalkulator
+
 figure(1);
-subplot(1,5,1);
-imshow(Image);
-title('Oryginal');
 
-%% OTWARCIE PRZEZ rekonstrukcje
+subplot(1,4,1); 
+imshow(Image1_otwarciePrzezRekonstrukcje);
+title('Otwarcie przez rekonstrukcje');
 
-marker = imerode(Image, ones(1,71));
-mask = Image;
-ImageReconstruct = imreconstruct(marker, mask);
+subplot(1,4,2);
+imshow(Image2_topHatPrzezRekonstrukcje);
+title('Top Hat przez rekonstrukcje');
 
-subplot(1,5,2);
-imshow(ImageReconstruct);
-title('Rekonstrukcja');
+subplot(1,4,3);
+imshow(Image3_rekonstrukcja);
+title('Likwidacja odblaskow pionowych');
 
-%% Top hat poprzez rekonstrukcje
-ImageTopHat = Image - ImageReconstruct;
+subplot(1,4,4);
+imshow(Image4_rekonstrukcja);
+title('Wynik');
 
-subplot(1,5,3);
-imshow(ImageTopHat);
-title('Top Hat');
+%% Porówanie rekonstrukcji dla metod klasycznych
 
-
-%% likwidacja odblaskow pionowych
-
-marker = imerode(ImageTopHat, ones(1,11));
-mask = ImageTopHat;
-ImageLoss = imreconstruct(marker, mask);
-
-subplot(1,5,4)
-imshow(ImageLoss);
-title('Likwidacja odblasków pionowych');
-
-%% rekonstrukcja z markerem postaci minimum
-
-ImageImdilate = imdilate(ImageLoss, ones(1,21));
-
-marker = min(ImageImdilate, ImageTopHat);
-mask = ImageTopHat;
-ImageMinimum = imreconstruct(marker, mask);
-
-subplot(1,5,5);
-imshow(ImageMinimum);
-title('Efekt końcowy');
-
-%% Porownanie otwarcie klasyczne i przez rekonstrukcje
 figure(2);
 
-subplot(2,1,1);
-imshow(ImageReconstruct);
-title('Rekonstrukcja');
+subplot(2,2,1);
+imshow(Image1_otwarciePrzezRekonstrukcje);
+title('Otwarcie przez rekonstrukcje');
 
-subplot(2,1,2);
-imshow(imopen(Image, ones(1,71)));
-title('Imopen');
+subplot(2,2,2);
+imshow(Image2_topHatPrzezRekonstrukcje);
+title('Top Hat przez rekonstrukcje');
 
-%% Porownanie Top Hat
+subplot(2,2,3);
+imshow(Image1_otwarcie); 
+title('Otwarcie klasyczne');
 
-figure(3); 
-subplot(2,1,1);
-imshow(ImageTopHat);
-title('TOPHAT poprzez rekonstrukcji');
+subplot(2,2,4); 
+imshow(Image2_topHat); 
+title('Top Hat Klasyczny');
 
-subplot(2,1,2);
-imshow(imtophat(Image,ones(1,71)));
-title('Klasyczny top hat');
+%% Wynik
+figure(3);
+
+imshow(Image4_rekonstrukcja); 
+%title('Wynik');
