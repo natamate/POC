@@ -1,93 +1,82 @@
-clearvars; close all; clc;
-IMG = imread('lena1.bmp');
-IMG2 = imread('lena2.bmp');
-IMG3 = imread('lena3.bmp');
-IMG4 = imread('lena4.bmp');
-figure;
-subplot(2,4,1);
-imshow(IMG);
-subplot(2,4,2);
-imshow(IMG2);
-subplot(2,4,3);
-imshow(IMG3);
-subplot(2,4,4);
-imshow(IMG4);
-subplot(2,4,5);
-imhist(IMG,256);
-subplot(2,4,6);
-imhist(IMG2,256);
-subplot(2,4,7);
-imhist(IMG3,256);
-subplot(2,4,8);
-imhist(IMG4,256);
+clearvars;
+close all;
+clc;
 
-IMG5=imread('hist1.bmp');
-figure;
-subplot(2,1,1);
-imshow(IMG5);
-subplot(2,1,2);
-imhist(IMG5,256);
-J = imadjust(IMG5);
-figure;
-subplot(2,1,1);
-imshow(J);
-subplot(2,1,2);
-imhist(J,256);
-figure;
-[H,x]=imhist(IMG5);
-C=cumsum(H);
-k=max(C)/max(H);
-C2=C/k;
-hold on;
-plot(x,H);
-plot(x,C2);
-hold off;
+Image = imread('ccl1.png');
+figure(1);
+imshow(Image);
 
-figure;
-LUT = uint8(255*(C2/max(C2)));
-[H2 x2] = imhist(intlut(IMG5,LUT),256);
-C22 = cumsum(H2)/(max(cumsum(H2))/max(H2));
-subplot(1,5,1);
-imshow(intlut(IMG5,LUT));
-subplot(1,5,5);
-histeq(IMG5,256);
-subplot(1,5,2); 
-imhist(intlut(IMG5,LUT),256);
-subplot(1,5,3);
-plot(x2,H2);
-subplot(1,5,4); 
-plot(x2,C22);
+[YY XX] = size(Image);
+
+ImageTmp = Image;
+
+N = 100;
+%% inicjowanie etykiety
+L = 1;
+
+%% tablica do wyznaczania luta
+id = 1:N;
+
+for y = 2:YY
+    for x = 2:(XX - 1)
+       %% DZIALANIA TYLKO gdy piksel rozny od zera
+        if (ImageTmp(y,x) > 0)
+          LA = ImageTmp(y-1,x-1);
+          LB = ImageTmp(y-1,x);
+          LC = ImageTmp(y-1,x+1);
+          LD = ImageTmp(y,x-1);
+          
+          %% wektor otoczenia piksela
+          neighbours = [LA LB LC LD];
+          sumNeighbours = sum(neighbours);
+          nozeroNeighbours = nonzeros(neighbours);
+          minNeighbours = min(nozeroNeighbours); 
+          maxNeighbours = max(nozeroNeighbours);
+          
+          %% przypadek a
+           if sumNeighbours == 0
+               ImageTmp(y,x) = L;
+               L = L + 1;
+           %% przypadek b    
+           elseif minNeighbours == maxNeighbours
+               ImageTmp(y,x) = minNeighbours;
+           %%  przypadek c    
+           elseif minNeighbours ~= maxNeighbours
+               %NeighboursWithoutMin = nozeroNeighbours(nozeroNeighbours~=minNeighbours);
+               %secondMinNeighbours = min(NeighboursWithoutMin);
+               %% przyjmujemy taka konwencje
+               ImageTmp(y,x) = minNeighbours;
+               %% jesli jestesmy w przypadku c to wystapil konflikt wiec tworzymy unie pomie
+               %% dzy etykieeta mniejsza i wieksza
+               %id = union(id,minNeighbours,secondMinNeighbours);
+               id = union(id,minNeighbours, maxNeighbours);
+           end
+       end
+   end
+end
+
+%% wyswietl rezultat indeksacji
+figure(2);
+imshow(ImageTmp, []);
+
+%% tworzymy tablice lut
+lut = zeros(N);
+
+for i = 1:N
+    lut(i) = root(id,i);
+end
+
+%% dla kazdego piksela ktory nie jest tlem realizujemy lut
+for y = 2:YY
+   for x = 2:(XX-1)
+      if (ImageTmp(y,x) > 0)
+        ImageTmp(y,x) = lut(ImageTmp(y,x));
+      end
+   end
+end
+
+%% po operacji LUT
+figure(3);
+imshow(label2rgb(ImageTmp),[]);
 
 
-IMGH1 = imread('hist2.bmp');
-figure;
-subplot(1,4,1); 
-imshow(IMGH1);
-subplot(1,4,2);
-imshow(imadjust(IMGH1));
-subplot(1,4,3); 
-imshow(histeq(IMGH1));
-subplot(1,4,4); 
-imshow(adapthisteq(IMGH1));
-
-IMGH2 = imread('hist3.bmp');
-figure;
-subplot(1,4,1); 
-imshow(IMGH2);
-subplot(1,4,2); 
-imshow(imadjust(IMGH2));
-subplot(1,4,3);
-imshow(histeq(IMGH2));
-subplot(1,4,4);
-imshow(adapthisteq(IMGH2));
-
-IMGH3 = imread('hist4.bmp');
-figure;
-subplot(1,4,1); 
-imshow(IMGH3);
-subplot(1,4,2); 
-imshow(imadjust(IMGH3));
-subplot(1,4,3);
-imshow(histeq(IMGH3));
-subplot(1,4,4); 
-imshow(adapthisteq(IMGH3));
